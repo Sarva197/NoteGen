@@ -15,7 +15,7 @@ function ShowUses() {
   useEffect(() => {
     const timer = setInterval(() => {
       setText((prevIndex) => (prevIndex + 1) % usesArray.length);
-    }, 8000); // Change text every 8 seconds
+    }, 5000); // Change text every 8 seconds
 
     return () => clearInterval(timer); // Cleanup to prevent memory leaks
   }, []);

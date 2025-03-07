@@ -5,7 +5,8 @@ import SignUp from './landingpage/signUp/SignUp';
 import AboutPage from './landingpage/about/AboutPage';
 import Login from './landingpage/login/Login';
 import Planspage from './landingpage/plans/Planspage';
-import Navbar from './landingpage/Navbar';
+import Navbar from './Navbar';
+import Footer from './Footer';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
@@ -17,5 +18,6 @@ createRoot(document.getElementById('root')).render(
       <Route path="/signup" element={<SignUp />}></Route>
       <Route path="/login" element={<Login/>}></Route>
     </Routes>
+    <Footer/>
   </BrowserRouter>
 )

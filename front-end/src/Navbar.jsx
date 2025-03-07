@@ -5,7 +5,7 @@ function Navbar() {
   return (
     <nav
       className="navbar sticky-top navbar-expand-lg border-bottom back-color"
-      style={{ backgroundColor: "white" }}
+      style={{ background: "linear-gradient(45deg, #4facfe, #00f2fe)" }}
     >
       <div className="container p-1" style={{ marginTop: "8px", marginLeft:'17rem' }}>
         <Link className="navbar-brand" to="/">
