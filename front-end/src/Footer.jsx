@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="text-white mt-5 p-5 fs-6" style={{ background: "linear-gradient(45deg, #4facfe, #00f2fe)" }}>
+    <footer className="text-white mt-5 p-5 fs-6" style={{ background: "linear-gradient(45deg, #4facfe, #00f2fe)",position:'relative', top:'', width:'100%' }}>
       <div className="container text-center">
         <p className="mb-2">&copy; {new Date().getFullYear()} NoteGen. All Rights Reserved.</p>
         

@@ -1,8 +1,13 @@
 import React from 'react'
+import Hero from './Hero'
+import PlansTable from './PlansTable'
 
 function Planspage() {
   return (
-    <div>Planspage</div>
+    <>
+    <Hero/>
+    <PlansTable/>
+    </>
   )
 }
 

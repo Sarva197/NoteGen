@@ -21,7 +21,7 @@ function ShowUses() {
   }, []);
 
   return (
-    <div className="container mt-5 p-5">
+    <div className="container mt-5 p-5" style={{height: "65vh"}}>
       <div className="row p-5 offset-1">
         <h1 style={{ lineHeight: "1.5" }}>{usesArray[text]}</h1>
       </div>

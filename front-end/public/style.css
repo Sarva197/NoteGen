@@ -10,3 +10,11 @@ body{
 .back-color{
     background-color: #f9f6f1 !important;
 }
+
+
+.ql-font-arial { font-family: Arial, sans-serif; }
+.ql-font-comic-sans { font-family: 'Comic Sans MS', cursive, sans-serif; }
+.ql-font-courier-new { font-family: 'Courier New', monospace; }
+.ql-font-georgia { font-family: Georgia, serif; }
+.ql-font-helvetica { font-family: Helvetica, sans-serif; }
+.ql-font-times-new-roman { font-family: 'Times New Roman', serif; }

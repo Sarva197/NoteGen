@@ -1,23 +1,44 @@
-import { createRoot } from 'react-dom/client'
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from './landingpage/homePage/HomePage';
-import SignUp from './landingpage/signUp/SignUp';
-import AboutPage from './landingpage/about/AboutPage';
-import Login from './landingpage/login/Login';
-import Planspage from './landingpage/plans/Planspage';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import HomePage from "./landingpage/homePage/HomePage";
+import AboutPage from "./landingpage/about/AboutPage";
+import Planspage from "./landingpage/plans/Planspage";
+import WhyPage from "./landingpage/whyNoteGen/WhyPage";
+import NotePage from "./Notespage/NotePage";
+import CreateNote from "./Notespage/CreateNote";
+import WelcomePage from "./Notespage/WelcomePage";
+import Layout from "./Layout"; // ✅ Import Layout
+import Signup from "./landingpage/signUp/SignUp";
+import Login from "./landingpage/login/Login";
+import ProtectedRoute from "./ProtectedRoute";
+import { AuthProvider } from "./contexts/AuthContext";
 
-createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <Navbar/>
-    <Routes>
-      <Route path="/" element={<HomePage />}></Route>
-      <Route path="/about" element={<AboutPage/>}></Route>
-      <Route path='/plans' element={<Planspage/>}></Route>
-      <Route path="/signup" element={<SignUp />}></Route>
-      <Route path="/login" element={<Login/>}></Route>
-    </Routes>
-    <Footer/>
-  </BrowserRouter>
-)
+createRoot(document.getElementById("root")).render(
+  <AuthProvider>
+    <BrowserRouter>
+      <Routes>
+        {/* Routes with Layout */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/plans" element={<Planspage />} />
+          <Route path="/whyNoteGen" element={<WhyPage />} />
+          <Route path="/login" element={<Login />} />
+
+          {/* Protected Routes inside Layout */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <WelcomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/user" element={<NotePage />} />
+          <Route path="/cnotes" element={<CreateNote />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </AuthProvider>
+);

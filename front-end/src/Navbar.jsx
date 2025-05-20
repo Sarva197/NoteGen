@@ -12,7 +12,7 @@ function Navbar() {
           <img src="images/note-taking.png" alt="nav-logo" style={{ width: "2.5rem" ,marginRight:'20rem'}} />
         </Link>
         <button
-          className="navbar-toggler ms-auto"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -22,12 +22,12 @@ function Navbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="collapse navbar-collapse ms-auto" id="navbarSupportedContent">
           <form className="d-flex" role="search">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-                <Link className="nav-link active" aria-current="page" to="/">
-                  Home
+              <li className="nav-item">
+                <Link className="nav-link active"  to="/whyNoteGen">
+                  Why NoteGen
                 </Link>
               </li>
               <li className="nav-item">
@@ -51,7 +51,7 @@ function Navbar() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="" className="nav-link">
+                <Link to="/user" className="nav-link">
                   <i
                     className="fa-regular fa-user"
                     style={{ fontSize: "1.2rem" }}
