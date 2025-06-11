@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 function ShowUses() {
-  const [text, setText] = useState(0);
+  const [textIndex, setTextIndex] = useState(0);
 
   const usesArray = [
     "Think of NoteGen as your go-to space for organizing research notes, project ideas, and important references—all in one place. No more scattered information across different apps!",
@@ -14,16 +14,22 @@ function ShowUses() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setText((prevIndex) => (prevIndex + 1) % usesArray.length);
-    }, 5000); // Change text every 8 seconds
+      setTextIndex((prevIndex) => (prevIndex + 1) % usesArray.length);
+    }, 5000); // Change text every 5 seconds
 
     return () => clearInterval(timer); // Cleanup to prevent memory leaks
   }, []);
 
   return (
-    <div className="container mt-5 p-5" style={{height: "65vh"}}>
+    <div className="container mt-5 p-5" style={{ minHeight: "60vh" }}>
       <div className="row p-5 offset-1">
-        <h1 style={{ lineHeight: "1.5" }}>{usesArray[text]}</h1>
+        <h1 
+          style={{ lineHeight: "1.5" }} 
+          aria-live="polite" 
+          aria-atomic="true"
+        >
+          {usesArray[textIndex]}
+        </h1>
       </div>
     </div>
   );

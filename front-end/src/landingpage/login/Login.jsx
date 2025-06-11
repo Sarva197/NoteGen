@@ -1,36 +1,50 @@
-import React, { useState } from 'react';
-// import { useNavigate } from "react-router-dom";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 function Login() {
-  const [email, setEmail] = useState('');// states to manage form 
-  const [password, setPassword] = useState('');
-  // const navigate = useNavigate();// to navigate to user page after login 
-  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [validated, setValidated] = useState(false); // For Bootstrap validation
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   console.log(e)
-    
-  //   const response = await login({ email, password });// making api call for login in backend 
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  //   // check the response ;
-  //   if(response.message){
-  //     alert("Login successful!");
-  //     navigate("/dashboard"); // Navigate after successful signup
-  //   }else{
-  //     alert(response.message || "Signup failed!");
-  //   }
-    
-  // };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    if (!form.checkValidity()) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
+    const response = await login({ email, password });
+
+    if (response.success) {
+      toast.success("Login successful!", { autoClose: 3000 });
+      navigate("/dashboard");
+    } else {
+      toast.error(response.message || "Login failed!", { autoClose: 3000 });
+    }
+  };
 
   return (
     <div className="container d-flex justify-content-center mt-5 mb-5">
       <form
-        className="card p-4 shadow-lg"
-        style={{ maxWidth: '400px', width: '100%' , height: "50vh"}}
+        className={`card p-4 shadow-lg needs-validation ${
+          validated ? "was-validated" : ""
+        }`}
+        noValidate
+        onSubmit={handleLogin}
+        style={{
+          maxWidth: "400px",
+          width: "100%",
+          minHeight: "350px",
+        }}
       >
-        {/* Title */}
         <h3 className="text-center mb-4">Login</h3>
 
         {/* Email */}
@@ -42,10 +56,12 @@ function Login() {
             type="email"
             className="form-control"
             placeholder="name@example.com"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          <div className="invalid-feedback">Please enter a valid email.</div>
         </div>
 
         {/* Password */}
@@ -57,15 +73,21 @@ function Login() {
             type="password"
             className="form-control"
             placeholder="Password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            minLength={6}
           />
+          <div className="invalid-feedback">
+            Please enter your password (minimum 6 characters).
+          </div>
         </div>
 
-        {/* Submit Button */}
         <div className="text-center">
-          <button  className="btn btn-primary w-100 mt-3">Submit</button>
+          <button type="submit" className="btn btn-primary w-100 mt-3">
+            Submit
+          </button>
         </div>
       </form>
     </div>

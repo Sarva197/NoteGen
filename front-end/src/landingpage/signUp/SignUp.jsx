@@ -1,32 +1,51 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext"; // ✅ Import useAuth
+import { useAuth } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [validated, setValidated] = useState(false);
   const { signup } = useAuth(); // ✅ Use signup from context
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    const form = e.currentTarget;
+
+    if (!form.checkValidity()) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
     const response = await signup({ username, email, password });
 
     if (response.success) {
-      alert("Signup successful!");
+      toast.success(`Welcome ${username}`, { autoClose: 3000 });
       navigate("/dashboard");
     } else {
-      alert(response.message || "Signup failed!");
+      toast.error(response.message || "Signup failed!", { autoClose: 3000 });
     }
   };
 
   return (
     <div className="container d-flex justify-content-center mt-5 mb-5">
       <form
-        className="card p-4 shadow-lg"
-        style={{ maxWidth: "350px", width: "100%", height: "60vh" }}
-        onSubmit={handleSignup} 
+        className={`card p-4 shadow-lg needs-validation ${
+          validated && "was-validated"
+        }`}
+        noValidate
+        style={{
+          maxWidth: "350px",
+          width: "100%",
+          maxHeight: "90vh",
+          overflowY: "auto",//its is to ardjust the overflow in y axis
+        }}
+        onSubmit={handleSignup}
       >
         <h3 className="text-center mb-4">Sign Up</h3>
 
@@ -44,6 +63,7 @@ function Signup() {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+          <div className="invalid-feedback">Please enter your username.</div>
         </div>
 
         {/* Email */}
@@ -58,8 +78,10 @@ function Signup() {
             placeholder="name@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            minLength={6}
             required
           />
+          <div className="invalid-feedback">Please enter a valid email.</div>
         </div>
 
         {/* Password */}
@@ -76,6 +98,9 @@ function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <div className="invalid-feedback">
+            Please enter your password (minimum 6 characters).
+          </div>
         </div>
 
         {/* Submit Button */}
