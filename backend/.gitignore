@@ -1,6 +1,16 @@
-node_modules/
+# Ignore environment variables and secrets
 .env
+
+# Ignore dependencies (will be installed via package.json)
+node_modules/
+
+# Ignore logs and temp files
+*.log
+
+# Ignore local test files or sensitive files (if you want)
 test.js
 a4.pdf
-package-lock.json
-package.json    
+
+# Optional: IDE/editor configs
+.DS_Store
+.vscode/
