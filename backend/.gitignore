@@ -1,16 +1,12 @@
-# Ignore environment variables and secrets
+# Ignore dependencies and secrets
+node_modules/
 .env
 
-# Ignore dependencies (will be installed via package.json)
-node_modules/
-
-# Ignore logs and temp files
-*.log
-
-# Ignore local test files or sensitive files (if you want)
+# Ignore test files and local extras
 test.js
 a4.pdf
 
-# Optional: IDE/editor configs
+# Ignore editor and system files
 .DS_Store
 .vscode/
+*.log

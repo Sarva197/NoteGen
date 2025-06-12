@@ -21,13 +21,35 @@ function Login() {
       return;
     }
 
-    const response = await login({ email, password });
+    try {
+      const response = await login({ email, password });
 
-    if (response.success) {
-      toast.success("Login successful!", { autoClose: 3000 });
-      navigate("/dashboard");
-    } else {
-      toast.error(response.message || "Login failed!", { autoClose: 3000 });
+      if (response.success) {
+        toast.success("Login successful!", { autoClose: 3000 });
+        navigate("/dashboard");
+      } else {
+        toast.error(response.message || "Login failed!", { autoClose: 3000 });
+      }
+    } catch (error) {
+      // Check if it's an Axios error with a response
+      if (error.response) {
+        if (error.response.status === 429) {
+          toast.error("Too many login attempts. Please try again later.", {
+            autoClose: 3000,
+          });
+          return;
+        } else {
+          toast.error(error.response.data || "Login failed!", {
+            autoClose: 3000,
+          });
+          return;
+        }
+      }
+
+      // For any other errors (like network issues)
+      toast.error("Something went wrong. Please try again.", {
+        autoClose: 3000,
+      });
     }
   };
 

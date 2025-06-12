@@ -22,7 +22,10 @@ function Signup() {
       return;
     }
 
-    const response = await signup({ username, email, password });
+    const response = await signup(
+      { username, email, password },
+      { withCredentials: true }
+    );
 
     if (response.success) {
       toast.success(`Welcome ${username}`, { autoClose: 3000 });
@@ -43,7 +46,7 @@ function Signup() {
           maxWidth: "350px",
           width: "100%",
           maxHeight: "90vh",
-          overflowY: "auto",//its is to ardjust the overflow in y axis
+          overflowY: "auto", //its is to ardjust the overflow in y axis
         }}
         onSubmit={handleSignup}
       >

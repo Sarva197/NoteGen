@@ -151,7 +151,7 @@ const handleDeleteSub = async (id) => {
           onClick={handleCreateSubject}
           className="btn btn-outline-success d-flex align-items-center gap-1"
         >
-          <span>➕</span> Create New Subject
+          <span>➕</span>Create Notes
         </button>
       </div>
 
