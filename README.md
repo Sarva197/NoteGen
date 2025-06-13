@@ -1,6 +1,6 @@
 ![License](https://img.shields.io/badge/license-Custom-red)
 ![Built with](https://img.shields.io/badge/Built%20with-MERN%20Stack-blueviolet)
-![Status](https://img.shields.io/badge/status-In%20Progress-yellow)
+![Status](https://img.shields.io/badge/status-Done-brightgreen)
 ![AI Integration](https://img.shields.io/badge/AI-GPT%20powered-green)
 
 
@@ -49,8 +49,6 @@ NoteGen is a full-stack web application that helps users **generate, organize, a
 
 
 If you want to collaborate or build on this idea **ethically**, feel free to contact me.
-
----
 
 ---
 
