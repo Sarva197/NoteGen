@@ -6,6 +6,11 @@ import dotenv from "dotenv";
 import loginRoutes from "./routes/loginRoutes.js";
 import notesRoutes from "./routes/notesRoute.js";
 import errorHandler from "./middleware/errorHandler.js";
+import passport from "passport";
+import "./config/passport.js";
+import authRoute from "./routes/authRoute.js";
+import ExpressError from './utils/ExpressError.js';
+
 
 dotenv.config();
 
@@ -29,6 +34,7 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(passport.initialize());
 //logger
 app.use((req, res, next) => {
   console.log(
@@ -39,6 +45,7 @@ app.use((req, res, next) => {
 
 app.use(express.urlencoded({ extended: true }));
 app.use("/", loginRoutes);
+app.use("/auth", authRoute);
 app.use("/api/v1/user", notesRoutes);
 
 // Routes

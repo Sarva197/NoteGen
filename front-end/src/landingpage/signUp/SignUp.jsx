@@ -112,6 +112,16 @@ function Signup() {
             Submit
           </button>
         </div>
+         <div className="text-center">
+          <a
+            href="http://localhost:3000/auth/google"
+            className="btn btn-danger w-100 mt-3"
+            style={{ textDecoration: "none" }}
+          >
+            <i className="fab fa-google me-2"></i>
+            Sign in with Google
+          </a>
+        </div>
       </form>
     </div>
   );

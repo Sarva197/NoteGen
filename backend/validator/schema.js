@@ -21,12 +21,13 @@ export const userSignupSchema = Joi.object({
 
   password: Joi.string()
     .min(6)
-    .required()
     .messages({
-      'string.empty': 'Password is required',
       'string.min': 'Password must be at least 6 characters',
     }),
-});
+
+  googleId: Joi.string()
+}).or('password', 'googleId'); // Require either password or googleId
+
 
 
 export const userLoginSchema = Joi.object({
@@ -45,6 +46,9 @@ export const userLoginSchema = Joi.object({
       'string.empty': 'Password is required',
       'string.min': 'Password must be at least 6 characters',
     }),
+
+    googleId: Joi.string()
+    .optional() 
 });
 
 
