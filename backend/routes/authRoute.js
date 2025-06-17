@@ -1,6 +1,6 @@
 import express from "express";
 import passport from "passport";
-import { createSecretToken } from "../utils/generateToken.js"; // Make sure this returns a JWT
+import { createSecretToken } from "../utils/generateToken.js"; 
 
 const router = express.Router();
 

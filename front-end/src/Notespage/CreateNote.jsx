@@ -2,14 +2,12 @@ import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useParams } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
 import { BeatLoader } from "react-spinners";
 import parse from "html-react-parser";
 import { toast } from "react-toastify";
 
 function CreateNote() {
   const [query, setQuery] = useState("");
-  const [answer, setAnswer] = useState("");
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
@@ -32,8 +30,6 @@ function CreateNote() {
   const handleSubmit = async () => {
     if (!query.trim()) return;
 
-    const userId = user._id;
-
     const newMessages = [...messages, { role: "user", content: query }];
     setMessages(newMessages);
     setQuery("");
@@ -41,7 +37,7 @@ function CreateNote() {
 
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/v1/user/${userId}/notes/${noteId}/chat`,
+        `http://localhost:3000/api/v1/user/${user._id}/notes/${noteId}/chat`,
         { query },
         { withCredentials: true }
       );
@@ -49,16 +45,12 @@ function CreateNote() {
       if (res.status === 200) {
         const llmAnswer = res.data.answer;
         setMessages((prev) => [...prev, { role: "bot", content: llmAnswer }]);
-        setAnswer(llmAnswer);
       } else {
-        console.error("Failed to fetch answer");
+        toast.error("Failed to fetch answer");
       }
     } catch (error) {
-      const errMsg =
-        error.response?.data?.message ||
-        "Something went wrong while fetching answer.";
+      const errMsg = error.response?.data?.message || "Something went wrong.";
       toast.error(errMsg);
-      console.error("Error fetching answer:", errMsg);
     } finally {
       setLoading(false);
     }
@@ -68,89 +60,112 @@ function CreateNote() {
     try {
       const res = await axios.post(
         `http://localhost:3000/api/v1/user/${user._id}/notes/${noteId}/add`,
-        {
-          content,
-        },
+        { content },
         { withCredentials: true }
       );
 
       if (res.status === 200) {
-        toast.success("Notes added sucessfully");
+        toast.success("Note added successfully!");
       }
-    } catch (err) {
-      const errMsg =
-        error.response?.data?.message ||
-        "Something went wrong while fetching answer.";
+    } catch (error) {
+      const errMsg = error.response?.data?.message || "Failed to add note.";
       toast.error(errMsg);
-      console.error("Error fetching answer:", errMsg);
     }
   };
 
   return (
     <div
-      className="container mt-2 d-flex flex-column mb-4"
-      style={{ height: "85vh" }}
+      className="container d-flex flex-column py-4"
+      style={{ height: "90vh", maxHeight: "90vh" }}
     >
-      <h2 className="mb-3">Note Chat Assistant</h2>
+      <h3 className="text-primary mb-3">
+        <i className="bi bi-chat-dots me-2"></i>Note Chat Assistant
+      </h3>
 
-      {/* Chat Area */}
+      {/* Chat Box */}
       <div
-        className="flex-grow-1 overflow-auto p-3 border rounded"
-        style={{ background: "#f8f9fa" }}
+        className="border rounded shadow-sm p-3 mb-3 overflow-auto"
+        style={{
+          flexGrow: 1,
+          background: "#f4f6f8",
+          scrollBehavior: "smooth",
+          borderRadius: "1rem",
+        }}
         ref={chatRef}
       >
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`p-3 mb-2 rounded-3 ${
+            className={`d-flex mb-3 ${
               msg.role === "user"
-                ? "bg-info-subtle align-self-start"
-                : "bg-success-subtle align-self-end"
+                ? "justify-content-start"
+                : "justify-content-end"
             }`}
-            style={{ maxWidth: "100%", wordWrap: "break-word" }}
           >
-            {msg.role === "bot" ? (
-              <>
-                <strong>LLM:</strong>
-                <div>{parse(msg.content)}</div>
+            <div
+              className={`p-3 rounded-4 shadow-sm ${
+                msg.role === "user"
+                  ? "bg-light text-dark"
+                  : "bg-success text-white"
+              }`}
+              style={{
+                maxWidth: "75%",
+                borderRadius: "20px",
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              <div className="fw-semibold mb-1">
+                {msg.role === "user" ? (
+                  <i className="bi bi-person-circle me-1"></i>
+                ) : (
+                  <i className="bi bi-robot me-1"></i>
+                )}
+                {msg.role === "user" ? "You" : "NoteGen AI"}
+              </div>
+
+              <div className="message-content">
+                {msg.role === "bot" ? parse(msg.content) : msg.content}
+              </div>
+
+              {msg.role === "bot" && (
                 <button
-                  className="btn btn-success btn-sm mt-2 px-3 py-1"
+                  className="btn btn-outline-light btn-sm mt-2"
+                  title="Add this response to your notes"
                   onClick={() => handleAddToNotes(msg.content)}
                 >
-                  <i className="bi bi-journal-plus me-2"></i>
-                  Add to Notes
+                  <i className="bi bi-journal-plus me-1"></i>Add to Notes
                 </button>
-              </>
-            ) : (
-              <strong>{msg.content}</strong>
-            )}
+              )}
+            </div>
           </div>
         ))}
 
-        {/* loading screen */}
         {loading && (
-          <div className="d-flex justify-content-center my-3">
-            <BeatLoader color="#007bff" loading={loading} size={15} />
+          <div className="d-flex justify-content-center mt-4">
+            <div className="text-center">
+              <BeatLoader color="#0d6efd" loading={true} size={12} />
+              <div className="mt-2 text-muted">Thinking...</div>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Chat Input Bar */}
-      <div className="mt-3 d-flex gap-2">
+      {/* Input Bar */}
+      <div className="input-group mt-auto">
         <input
           type="text"
-          className="form-control"
-          placeholder="Ask a question..."
+          className="form-control rounded-start-pill"
+          placeholder="Ask something about this note..."
           value={query}
           onChange={handleQueryChange}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
         />
         <button
-          className="btn btn-primary"
+          className="btn btn-primary rounded-end-pill px-4"
           onClick={handleSubmit}
           disabled={loading}
         >
-          Send
+          <i className="bi bi-send-fill me-2"></i>Send
         </button>
       </div>
     </div>
