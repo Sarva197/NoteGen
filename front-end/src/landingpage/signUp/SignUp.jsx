@@ -29,7 +29,7 @@ function Signup() {
 
     if (response.success) {
       toast.success(`Welcome ${username}`, { autoClose: 3000 });
-      navigate("/dashboard");
+      navigate("/dashboard" , { replace: true });
     } else {
       toast.error(response.message || "Signup failed!", { autoClose: 3000 });
     }

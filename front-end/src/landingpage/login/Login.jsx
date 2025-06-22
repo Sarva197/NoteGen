@@ -26,7 +26,7 @@ function Login() {
 
       if (response.success) {
         toast.success("Login successful!", { autoClose: 3000 });
-        navigate("/dashboard");
+        navigate("/dashboard" ,  { replace: true });
       } else {
         toast.error(response.message || "Login failed!", { autoClose: 3000 });
       }
